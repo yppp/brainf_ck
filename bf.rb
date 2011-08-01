@@ -1,6 +1,10 @@
 # -*- encoding:utf-8 -*-
 
 class Brainfuck
+  
+  class ProgramError < StandardError
+  end
+
   def initialize(src)
     @souce = src
     @program = []
@@ -29,7 +33,7 @@ class Brainfuck
         :lb
         when ']'
         r = stack.pop
-        raise "]が多すぎます" if r.nil?
+        raise ProgramError, "]が多すぎます" if r.nil?
         @jmptab[y] = r
         @jmptab[r] = y
         :rb
@@ -41,7 +45,7 @@ class Brainfuck
 
     end
 
-    raise "[が多すぎます" unless stack.empty?
+    raise ProgramError, "[が多すぎます" unless stack.empty?
   end
 
   def exec
